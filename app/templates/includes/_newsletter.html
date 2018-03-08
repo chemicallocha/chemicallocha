@@ -1,0 +1,17 @@
+<section id="newsletter-container" class="container">
+    <h1>Subscribe to get Latest news about this blog!</h1>
+    <div class="subscribe-form" style="margin-top: 1.5em;">
+    <form action="{{ url_for('add_subscriber') }}" method="post">
+        {{ newsletter_form.hidden_tag() }}
+        <input type="hidden" name="next_page" value="{{ request.path }}">
+        <div class="input-group">
+            {{ newsletter_form.email(class="input-group-field", placeholder="Email", type='email')}}
+            <div class="input-group-button">
+            {{ newsletter_form.submit(class="input-group-button button hollow", style="color:var(--brand-color) !important;" )}}
+            </div>
+        </div>
+        <p class="help-text">By clicking subscribe, you agree to our Privacy and Service Terms.</p>
+    </form>
+    </div>
+
+</section>

@@ -1,0 +1,35 @@
+{%extends "base.html"%}
+{% block content %}
+<section class="post">
+    <div class="heading">
+        <img src="{{ url_for('static', filename='assets/img/01.jpg')}}" alt="Heading Image">
+        <h1>This is my first Blog Post in my blog which I created earlier..</h1>
+    </div>
+    <div class="post-meta">
+        <p class="text-grey">Author : {{ post.author }}</p><p class="text-grey">Published: 25th January, 2018</p>
+    </div>
+    <div class="post-nav">
+        <ul>
+            <a href="#lorem">Lorem</a>
+            <a href="#ipsum">Ipsum</a>
+            <a href="#dolor">Dolor</a>
+        </ul>
+    </div>
+
+    <article class="container">
+        <h1 id="lorem">Lorem</h1>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellendus iure dicta tempore. Vel consequuntur facere sed voluptate odio harum eum quod minima fugit enim, quia voluptatem ipsum, provident dicta non!</p>
+        <br><h1 id="ipsum">Ipsum</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab perferendis illo beatae voluptatem labore deleniti voluptatibus totam dolore ratione magni. Sequi labore, maxime soluta ut qui aspernatur dignissimos ratione voluptate!</p>
+        <br><h1 id="dolor">Dolor sit</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi consequuntur non aspernatur quasi itaque optio maiores et totam perspiciatis, nesciunt culpa deserunt unde quas eligendi, quam perferendis neque facilis quod!</p>
+        <img src="{{ url_for('static', filename='assets/img/01.jpg')}}" alt="Image">
+    </article>
+
+</section>
+
+
+
+
+
+{% endblock %}

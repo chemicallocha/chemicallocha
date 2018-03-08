@@ -1,0 +1,12 @@
+{% extends 'base.html'%}
+{% block content %}
+<section id="post-category" class="container">
+    <p class="lead">Posts in Tag {{ tag.tag_name }}</p><hr><br><br>
+    <ul class="posts-list row">
+    {% for post in posts %}
+        {% include 'includes/_post_media_object.html'%}
+    {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}

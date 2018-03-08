@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="form-container">
+    <h1>Edit Profile</h1><br><br> 
+    <form action="" method="post" id="form-box">
+
+        {{ form.hidden_tag() }}
+
+            {{ form.fullname.label(class="label") }}
+            {{ form.fullname(size=32) }}
+            {% for error in form.fullname.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+
+            {{ form.occupation.label(class="label") }}
+            {{ form.occupation(size=32) }}
+            {% for error in form.occupation.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+
+            {{ form.hobby.label(class="label") }}
+            {{ form.hobby(size=32) }}
+            {% for error in form.hobby.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+
+            {{ form.about_me.label(class="label") }}
+            {{ form.about_me(cols=32, rows=6) }}
+            {% for error in form.about_me.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+
+            {{ form.submit(class="button alert") }}
+    </form>
+</section>
+{% endblock %}

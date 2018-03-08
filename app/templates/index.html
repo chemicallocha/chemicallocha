@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- content -->
+
+<section id="hero">
+        <video autoplay muted loop id="intro">
+                <source src="{{ url_for('static', filename='assets/img/intro.mp4') }}" type="video/mp4">
+              </video>
+    <div class="row grid-x">
+        <div class="columns large-5 medium-5 large-offset-1 medium-offset-1">
+            <div class="showcase-box">
+                <h1>Welcome {{ current_user.username}}</h1>
+                <p>Hey There! You are Welcome to the Portal..</p>
+                <p>You can create a blog of your own and can add articles and get money for them instantly.</p>
+                <br>
+                <a href="#blog-showcase" class="button white hollow">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container">
+        <h1><small>Featured Posts</small></h1><hr>
+        {% for post in featured[:3] %}
+            <div id="post-tab">
+                {% if post.banner %}
+                    <img src="{{ post.banner }}" alt="" srcset="">
+                {% endif %}
+                <h3><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></h3><br>
+                <div class="post-meta row">
+                    <p><i class="fi-like"></i> Likes : {{ post.likes }}
+                    <br><i class="fi-torso"></i> Written By: {{ post.author }} <br>
+                    <i class="fi-clock"></i> Last Updated: {{ moment(post.timestamp).format('LLL') }}</p>
+                </div>
+                <a href="{{ url_for('show_post', postID=post.id)}}" class="button secondary">Read Article</a>
+                <br><br>
+            </div>
+        {% endfor %}
+</section>
+
+
+<section id="blog-showcase">
+    <div class="row grid-x">
+        <div class="columns large-5 medium-5 large-offset-1 medium-offset-1">
+            <div class="showcase-box">
+                <h1>Read on the latest Blog Posts !</h1>
+                <p>You can read the latest articles written by peoples all over the world. <br> And You can one too..</p>
+                <br>
+                <a href="{{ url_for('blog')}}" class="button hollow default">Go to Blog</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

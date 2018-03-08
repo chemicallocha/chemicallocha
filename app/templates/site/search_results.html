@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}  
+<section class="container row">
+    <h1>Search results for "{{ query }}"</h1><hr><br>
+        <div class="row">      
+            {% for post in results.items %}
+	        <div class="media-object">
+	            <div class="media-object-section">
+	                <div class="thumbnail">
+	                    <img src="{{ post.author.avatar(62)}}">
+	                </div>
+	            </div>
+	            <div class="media-object-section">
+	                <h4><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></h4>
+	                <div class="post-meta"><p> at: {{ post.timestamp }} </p></div>
+	            </div>
+	        </div>
+	        {% endfor %}
+        </div>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% block content %}
+<section id="post-categories" class="container">
+    <h1>Post Categories</h1><hr><br><br>
+    <ul class="categories-list container">
+    {% for category in post_categories %}
+        <li class="category">
+            <a href="{{ url_for('post_category' , categoryID=category.id) }}">{{ category.category_name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+</section>
+<section id="post-tags" class="container">
+        <h1>Post Tags</h1><hr><br><br>
+        <ul class="tags-list container">
+        {% for tag in tags %}
+            <li class="category">
+                <a href="{{ url_for('post_tag' , tagID=tag.id) }}" class="alert">{{ tag.tag_name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

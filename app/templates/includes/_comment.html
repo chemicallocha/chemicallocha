@@ -1,0 +1,40 @@
+<section id="comment-loader">
+    <div class="container">
+        <h1><i class="fi-comments"></i> Latest Comments!</h1><br><br>
+        {% if comments %}
+            
+            {% for comment in comments %}
+                {% if comment.approved == 1 %}
+                    <div class="media-object">
+                        <div class="media-object-section">
+                            <div class="thumbnail">
+                               <img src="{{ url_for('static', filename='assets/img/cl-logo-square.png')}}">
+                                
+                            </div>
+                        </div>
+                        <div class="media-object-section">
+                            <p class="post-meta"><a href="{{ url_for('user', username=comment.username(comment.user_id))}}">{{ comment.username(comment.user_id) }}</a> at: {{ moment(comment.timestamp).fromNow() }} said: </p>
+                            <h6>{{ comment.comment }}</h6>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</section>
+<section id="comment-section">
+    <h1>Leave a Comment!</h1>
+    <form action="" method="POST" id="comment-form">
+        {{ commentform.hidden_tag() }}
+        {{ commentform.comment.label(class='label') }}
+        {{ commentform.comment(cols=32, rows=4) }}
+        {% for error in commentform.comment.errors %}
+        <span class="error-msg">{{ error }}</span>
+        {% endfor %}
+        {% if current_user.is_anonymous %}
+            <a class="button secondary" href="{{ url_for('login', next=ref)}}">Login to Comment!</a>
+        {% else %}
+            {{ commentform.submit(class="button secondary") }}
+        {% endif %}
+    </form>
+</section>

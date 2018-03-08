@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="article-editor">
+    <div class="container text-center">
+    <h1>Add New Article </h1><hr>
+    </div>
+    <div class="container">
+        <form action="" method="post" class="article-editor-form">
+            {{ form.hidden_tag() }}
+
+            {{ form.heading.label(class="label") }}
+            {{ form.heading() }}
+            {% for error in form.heading.errors %}
+                <span class="error-msg">
+                    {{ error }}
+                </span>
+            {% endfor %}
+
+            {{ form.body.label(class="label") }}
+            {{ form.body(rows=12, id="editor") }}
+            {% for error in form.body.errors %}
+                <span class="error-msg">
+                    {{ error }}
+                </span>
+            {% endfor %}
+            <br>
+            <label class="label" for="post-category-selector">Post Category</label>
+            <select id="post-category-selector" name="post-category-selector" required> 
+                {% for category in postcategories %}
+                    <option id="category.id">{{ category.category_name }}</option>
+                    
+
+                {% endfor %}
+            </select>
+            <p class="help-text">Enter the post category. You can also add post category from <a href="{{ url_for('add_post_catalog')}}" target="_blank">here.</a>You can also start a series of articles by adding a post category of that series name.</p>
+            <br>
+
+            
+            <div class="row grid-x">
+                <label for="tags" class="label">Tags</label>
+                <input type="text" name="tags" id="tags" placeholder="Tags">
+                <p class="help-text">
+                    Seperated by Comma. Only Those tags will be added which are already available. See already available tags list <a href="{{ url_for('post_catalog')}}" target="_blank">here.</a>You add more
+                    tags also from <a href="{{ url_for('add_post_catalog')}}" target="_blank">here.</a>
+                </p>
+            </div>
+            
+            <br>
+            {{form.submit(value="Add Article", class="button")}}
+        </form>
+    </div>
+
+
+</section>
+{% endblock %}
+{% block script %}
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'#editor' });</script>
+{% endblock %}

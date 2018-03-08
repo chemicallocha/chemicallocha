@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="article-editor">
+    <div class="container text-center">
+    <h1>Edit Article </h1><hr>
+    </div>
+    <div class="container">
+        <form action="" method="post" class="article-editor-form">
+            {{ form.hidden_tag() }}
+
+            {{ form.heading.label(class="label") }}
+            {{ form.heading() }}
+            {% for error in form.heading.errors %}
+                <span class="error">
+                    {{ error }}
+                </span>
+            {% endfor %}
+
+            {{ form.body.label(class="label") }}
+            {{ form.body(rows=12, id="editor") }}
+            {% for error in form.body.errors %}
+                <span class="error">
+                    {{ error }}
+                </span>
+            {% endfor %}
+            <br>
+            {{form.submit(value="Update Article", class="button secondary") }}
+        </form>
+    </div>
+
+
+</section>
+
+
+
+{% endblock %}
+
+{% block script %}
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'#editor' });</script>
+{% endblock %}

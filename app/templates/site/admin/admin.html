@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section id="comments" class="container">
+    {% if pending_comments %}
+        <h1><small> Pending Comments </small></h1><hr><br>
+        <div class="grid-x grid-padding-x">
+        {% for comment in pending_comments.items %}
+            <div class="callout large-6 medium-12 small-12 columns cell">
+                <div class="row">
+                    <p><strong> User : </strong> <a href="{{ url_for('user', username=comment.username(comment.user_id))}}">{{ comment.username(comment.user_id) }}</a></p>
+                    <p><strong> Timestamp : </strong>{{ moment(comment.timestamp).fromNow() }}</p>
+                    <p><strong> Comment: </strong>{{ comment.comment }}</p>
+                </div>
+                <div class="row">
+                <a href="{{ url_for('approve_comment', commentID=comment.id)}}" class="button secondary">Approve Comment</a>
+                <a href="{{ url_for('delete_comment', commentID=comment.id)}}" class="button alert">Delete Comment</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+
+        <div class="row callout pagination">
+            <div class="float-left">
+                {% if pending_comments.has_prev %}
+                    <a href="{{ url_for('admin', comment_page=pending_comments.prev_num) }}" class="button hollow"><i class="fi-arrow-left"></i> Newer posts</a>
+                {% else %}
+                    <i class="fi-arrow-left"></i> No Newer posts
+                {% endif %}
+            </div>
+            <div class="float-right"> 
+                {% if pending_comments.has_next %}
+                    <a href="{{ url_for('admin', comment_page= pending_comments.next_num) }}" class="button hollow">Older posts <i class="fi-arrow-right"></i></a>
+                {% else %}
+                    No Older posts <i class="fi-arrow-right"></i>
+                {% endif %}
+            </div>
+        </div>
+
+    {% else %}
+            <h1>No Pending comments</h1>
+    {% endif %}
+
+
+</section>
+<hr>
+<section id="contact-requests" class="container">
+{% if contact_requests %}
+    <h1><small>Pending Contact Requests</small></h1><hr><br>
+    <div class="grid-x grid-padding-x">
+    {% for contact in contact_requests.items %}
+    <div class="row callout large-12 medium-6 columns cell">
+        <div class="row">
+        <p>User : {{ contact.name }}</p>
+        <p >Email : {{ contact.email }}</p>
+        <p>Timestamp : {{ moment(contact.timestamp).format('LLLL') }}</p>
+        <p>Message:</p>
+        <p>{{ contact.message }}</p>
+        </div>
+        <div class="row">
+            <a href="{{ url_for('reply_contact', contactID=contact.id)}}" class="button secondary">Reply</a>
+            <a href="{{ url_for('delete_contact', contactID=contact.id)}}" class="button alert">Delete Request</a>
+        </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="row callout pagination" style="width:100%;">
+        <div class="float-left">
+            {% if contact_requests.has_prev %}
+                <a href="{{ url_for('admin', _page=requests_page.prev_num) }}" class="button hollow"><i class="fi-arrow-left"></i> Newer posts</a>
+            {% else %}
+                <i class="fi-arrow-left"></i> No Newer posts
+            {% endif %}
+        </div>
+        <div class="float-right"> 
+            {% if contact_requests.has_next %}
+                <a href="{{ url_for('admin', _page=requests_page.next_num) }}" class="button hollow">Older posts <i class="fi-arrow-right"></i></a>
+            {% else %}
+                No Older posts <i class="fi-arrow-right"></i>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+        <h1><small>No Recent Contact Requests 
+        </small></h1><hr><br>
+    {% endif %}
+
+
+
+</section>
+<hr>
+<section id="files" class="container">
+    {% if uploaded_files %}
+        <h1><small>Recently Uploaded Files</small></h1><hr>
+        <br>
+        <table class="striped hover">
+            <thead>
+                <tr>
+                    <th>File ID</th>
+                    <th>Filename</th>
+                    <th>TimeStamp</th>
+                    <th>User</th>
+                    <th>User ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in uploaded_files.items %}
+                    <tr>
+                        <td>{{ file.id }}</td>
+                        <td>{{ file.filename }}</td>
+                        <td>{{ moment(file.timestamp).format('LLLL') }}</td>
+                        <td><a href="{{ url_for('user', username='file.username(file.user_id)')}}">{{ file.username(file.user_id) }}</a></td>
+                        <td>{{ file.user_id }}</td>
+                        <td>
+                            <a href="{{ url_for('view_file', fileID=file.id)}}" class="button secondary">View File</a>
+                            <a href="{{ url_for('delete_file', fileID=file.id)}}" class="button alert">Delete File</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row callout pagination">
+            <div class="float-left">
+                {% if uploaded_files.has_prev %}
+                    <a href="{{ url_for('admin', files_page=uploaded_files.prev_num) }}" class="button hollow"><i class="fi-arrow-left"></i> Newer Files</a>
+                {% else %}
+                    <i class="fi-arrow-left"></i> No Newer Files
+                {% endif %}
+            </div>
+            <div class="float-right"> 
+                {% if uploaded_files.has_next %}
+                    <a href="{{ url_for('admin', files_page=uploaded_files.next_num) }}" class="button hollow">Older Files <i class="fi-arrow-right"></i></a>
+                {% else %}
+                    No Older Files <i class="fi-arrow-right"></i>
+                {% endif %}
+            </div>
+        </div>
+
+    {% endif %}
+    
+
+</section>
+
+
+{% endblock %}
+

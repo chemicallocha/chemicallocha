@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container">
+    {% if form %}
+    <h1>Upload Files</h1>
+    <form action="" method="POST" enctype="multipart/form-data"> 
+        {{form.hidden_tag()}}
+        <input type="file" name="inputfile" /> 
+        {{ form.submit(class="button success") }}
+    </form> 
+    {%endif%}
+
+</section>
+<section class="container">
+    {% if filename %}
+    <div class="row">
+        <p class="lead">Your File has been saved under the name <br> {{ filename }}</small></p><br>
+    </div><hr><br><br>
+    <div class="row">
+        <p class="lead">You can use the following url to link to your file.</p>
+        <input type="url" value="{{ fileurl }}">
+    </div>
+    <div class="row">
+    <a href="{{ url_for('uploader') }}" class="button secondary">Upload More Files</a>
+    </div>
+    {% endif %}
+</section>
+
+
+
+{% endblock %}

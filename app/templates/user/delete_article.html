@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container">
+    <h1 class="text-center alert">Delete Article</h1><hr><br>
+    <div>
+        <p>Do you really want to delete this article?</p>
+        <br>
+
+        <div id="posts-table">
+            <table id="posts-table">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Heading</td>
+                        <td>TimeStamp</td>
+                        <td>Author</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                        <tr>
+                            <td>{{ post.id }}</td>
+                            <td>{{ post.heading }}</td>
+                            <td>{{ post.timestamp }}</td>
+                            <td>{{ post.author }}</td>
+                        </tr>
+                </tbody>
+    
+    
+            </table>
+        </div>
+        <div>
+        <a href="{{ url_for('dashboard')}}", class="button">Go Back!</a>
+        <a href="{{ url_for('delete_article', postID=post.id)}}" class="button alert">Confirm Delete</a>
+        </div>
+    </div>
+
+
+</section>
+
+
+
+{% endblock %}

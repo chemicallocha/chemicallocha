@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block content %}
+<section id="add-category" class="container">
+    <h1>Add Posts Category</h1>
+    <form action="{{ url_for('add_category') }}" method="POST">
+        <label for="category" class="label">Add Post Category Name</label>
+        <input type="text" name="category" id="category">
+        <button type="submit" class="button secondary">Add Category</button>
+    </form>
+</section>
+<section id="add-tag" class="container">
+    <h1>Add Post Tags</h1>
+    <form action="{{ url_for('add_tag') }}" method="post">
+        <label for="tag" class="label">Add Post Tag Name</label>
+        <input type="text" name="tag" id="tag">
+        <button type="submit" class="button primary">Add Tag</button>
+    </form>
+</section>
+
+
+{% endblock %}

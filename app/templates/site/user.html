@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="user-profile" class="container">
+    <div class="user">
+        <div class="row user-front">
+            <img src="{{ url_for('static', filename='assets/img/cl-logo-square.png')}}"><h1 style="display:inline-block;"> {{ user.username }} </h1>
+        </div>
+    </div>
+    <div class="user-info">
+        <div class="last-seen">
+            <p>Last Seen On : {% if user.last_seen %}<span class="timestamp">{{ moment(user.last_seen).format('LLLL') }}</span>{% endif %}</p>
+        </div>
+        <div class="user-meta">
+            <p>Full Name : {% if user.fullname %}{{ user.fullname }}</p>{% endif %}
+        </div>
+        <div class="user-meta">
+            <p>Works at : {% if user.occupation %}{{ user.occupation }}</p>{% endif %}
+        </div>
+        <div class="user-meta">
+            <p>Hobbies : {% if user.hobby %}{{ user.hobby }}</p>{% endif %}
+        </div>
+        <div class="user-meta">
+            <p>About Me: {% if user.about_me %}{{ user.about_me }}</p>{% endif %}
+        </div>
+    </div>
+    <br><br>
+    <p>Is your profile info missing or outdate?  <a href="{{ url_for('edit_profile')}}">Edit Your Profile!</a></p>
+</section><br>
+<section id="user-posts" class="container">
+    <h2>Latest Posts By {{ user.username[:10] }}</h2><hr><br>
+        {% for post in posts %}
+            {% include "includes/_post_media_object.html"%}
+        {% endfor %}
+</section>
+
+{% endblock %}

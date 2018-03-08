@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section id="form-container">
+    <h1>Contact</h1>
+    <form action="" id="form-box" method="POST" class="w3-animate-left">
+        {{ form.hidden_tag() }}
+        
+            {{ form.name.label(class='label') }}
+            {{ form.name(size=32) }}
+            {% for error in form.name.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+        
+        
+            {{ form.email.label(class='label') }}
+            {{ form.email(size=32) }}
+            {% for error in form.email.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+        
+        
+            {{ form.company.label(class='label') }}
+            {{ form.company(size=32) }}
+            {% for error in form.company.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+        
+        
+            {{ form.message.label(class='label') }}
+            {{ form.message(cols=30, rows=4) }}
+            {% for error in form.message.errors %}
+            <span class="error-msg">{{ error }}</span>
+            {% endfor %}
+        
+        {{ form.submit(class="button secondary") }}
+    </form>
+</section>
+
+{% endblock %}

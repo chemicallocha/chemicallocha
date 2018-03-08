@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section id="blog-home" class="container">
+    <div class="jumbo">
+        <h1>Feed on the latest blog feed.</h1>
+        <a href="#posts"></a>
+    </div>
+</section>
+<section id="featured-posts" class="container">
+    {% if featured_posts %}
+        <h1><small>Featured Posts</small></h1><hr><br>
+        {% for post in latest.items[:5] %}
+            <div id="post-tab">
+                {% if post.banner %}
+                    <img src="{{ post.banner }}" alt="" srcset="">
+                {% endif %}
+                <h3><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></h3><br>
+                <div class="post-meta row">
+                    <p><i class="fi-like"></i> Likes : {{ post.likes }}
+                    <br><i class="fi-torso"></i> Written By: {{ post.author }} <br>
+                    <i class="fi-clock"></i> Last Updated: {{ moment(post.timestamp).format('LLL') }}</p>
+                </div>
+                <a href="{{ url_for('show_post', postID=post.id)}}" class="button secondary">Read Article</a>
+                <br><br>
+            </div>
+        {% endfor %}
+    {% endif %}
+</section>
+<section id="latest-posts" class="container">
+    {% if latest %}
+        <h1><small>Recents Posts</small></h1><hr><br>
+        {% for post in latest.items %}
+            <div id="post-tab">
+                {% if post.banner %}
+                    <img src="{{ post.banner }}" alt="" srcset="">
+                {% endif %}
+                <h3><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></h3><br>
+                <div class="post-meta row">
+                    <p>
+                    <i class="fi-like"></i> Likes : {{ post.likes }}<br>
+                    <i class="fi-torso"></i> Written By: {{ post.author }} <br>
+                    <i class="fi-clock"></i> Last Updated: {{ moment(post.timestamp).format('LLL') }}</p>
+                </div>
+                <a href="{{ url_for('show_post', postID=post.id)}}" class="button secondary">Read Article</a>
+                <br><br>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div id="posts-pagination" class="row callout pagination">
+        <div class="float-left">
+        {% if latest.has_prev %}
+            <a href="{{ url_for('blog', page=latest.prev_num) }}" class="button hollow"><i class="fi-arrow-left"></i> Newer posts</a>
+        {% else %}
+            <i class="fi-arrow-left"></i> No Newer posts
+        {% endif %}
+        </div>
+        <div class="float-right"> 
+        {% if latest.has_next %}
+            <a href="{{ url_for('blog', page=latest.next_num) }}" class="button hollow">Older posts <i class="fi-arrow-right"></i></a>
+        {% else %}
+          No Older posts <i class="fi-arrow-right"></i>
+        {% endif %}
+        </div>
+    </div>
+
+</section>
+<section id="post-categories" class="container">
+    <p class="lead">Post Categories</p><hr>
+    <ul class="categories-list container">
+    {% for category in post_categories %}
+        <li class="category">
+            <a href="{{ url_for('post_category' , categoryID=category.id) }}">{{ category.category_name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+</section>
+<section id="post-tags" class="container">
+        <p class="lead">Post Tags</p><hr>
+        <ul class="tags-list container">
+        {% for tag in tags %}
+            <li class="category">
+                <a href="{{ url_for('post_tag' , tagID=tag.id) }}">{{ tag.tag_name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </section>
+
+{% endblock%}
