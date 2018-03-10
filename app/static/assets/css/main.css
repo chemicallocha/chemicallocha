@@ -388,6 +388,7 @@ label{
     min-width: 100%; 
     min-height: 100%;
     z-index: -1;
+    background: linear-gradient(135deg, rgba(0,183,234,1) 0%,rgba(0,179,244,1) 55%,rgba(0,158,195,1) 100%);
 }
 @media only screen and (max-width: 768px) {
     #intro {
@@ -397,8 +398,9 @@ label{
 #blog-showcase{
     min-height: 100vh;
     color: var(--white);
-    background: url('../img/blog-showcase.jpg') no-repeat;
+    background: linear-gradient(135deg, rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%);
     background-size: cover;
+    position: relative;
 }
 #hero .showcase-box,#blog-showcase .showcase-box{
     padding: 20px 30px;
@@ -407,6 +409,7 @@ label{
     margin-top: 50px;
     margin-bottom: 50px;
     border-radius: 10px;
+    position: absolute;
 }
 .showcase-box .button{
     color: #454545!important;
