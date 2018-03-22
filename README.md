@@ -3,7 +3,7 @@
 This repo contains the source code of the aeroson blogging system &copy; v1
 Source code is written in python and html with css
 
-#### Major features v1.3
+### Major features v1.3
 1. contains everything needed for a blog
 2. Aer Comment &copy; v2 for allowing comments on any blog post
 3. Global blog feed to discover every post by likes
