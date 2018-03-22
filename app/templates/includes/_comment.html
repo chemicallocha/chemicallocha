@@ -1,10 +1,11 @@
-<section id="comment-loader">
-    <div class="container">
-        <h1><i class="fi-comments"></i> Latest Comments!</h1><br><br>
+<div class="container">
+       <section id="show-comments">
+        <h2>People Says</h2>
         {% if comments %}
             
             {% for comment in comments %}
                 {% if comment.approved == 1 %}
+                   <div class="comment">
                     <div class="media-object">
                         <div class="media-object-section">
                             <div class="thumbnail">
@@ -17,13 +18,13 @@
                             <h6>{{ comment.comment }}</h6>
                         </div>
                     </div>
+                </div>
                 {% endif %}
             {% endfor %}
         {% endif %}
-    </div>
 </section>
-<section id="comment-section">
-    <h1>Leave a Comment!</h1>
+<section id="add-comments">
+    <h2>Leave a Comment!</h2>
     <form action="" method="POST" id="comment-form">
         {{ commentform.hidden_tag() }}
         {{ commentform.comment.label(class='label') }}
@@ -38,3 +39,4 @@
         {% endif %}
     </form>
 </section>
+</div>

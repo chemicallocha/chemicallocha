@@ -1,11 +1,12 @@
-<div class="media-object">
+<div class="media-object post-media-object">
     <div class="media-object-section">
         <div class="thumbnail">
-            <img src="{{ post.post_thumbnail(post.id, 62)}}" style="height: 70px;width: 70;">
+            <img src="{{ post.post_thumbnail(post.id) }}" style="height: 70px;width: 70;">
         </div>
     </div>
     <div class="media-object-section">
+       <p><a href="{{ url_for('user', username=post.author)}}">{{ post.author }}</a> | {{ moment(post.timestamp).format('LL') }} </p>
         <p><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></p>
-        <p class="post-meta" style="margin:0;">Published: {{ moment(post.timestamp).format('LLL') }} </p>
+        
     </div>
 </div>

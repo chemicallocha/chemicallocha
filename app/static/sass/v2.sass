@@ -1,0 +1,756 @@
+$font-stack: Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif
+$primary: #1779ba 
+
+*
+    max-width: 100%
+    box-sizing: border-box
+
+
+html
+    min-height: 100vh
+    font-size: 18px
+
+
+body 
+    font-size: 15px
+    font-family: $font-stack
+    min-width: 320px
+    color: #212529
+    background-color: #fff
+    height: 100%
+
+.body
+    height: 300px
+
+nav
+    width: 100vw
+    font-size: 15px
+    background-color: #fff
+    border-bottom: 1px solid #f2f2f2
+    position: relative
+
+#nav .container
+    height: 50px
+    display: flex
+
+
+    a
+        color: #616161
+
+
+    #logo
+        margin-right: 20px
+        height: 35px
+        margin-top: 8px
+
+        img
+            margin: 0
+            padding: 0
+            width: 100px
+            height: 100%
+
+
+    .menu-link
+        color: #262626
+        display: inline-block
+        padding: 13px 27px
+        height: 50px
+        cursor: pointer
+        line-height: 50px !important
+        padding-bottom: 0 !important
+        padding-top: 0 !important
+
+
+    .menu-link:not(.button):hover
+        background-color: #f2f2f2
+
+
+    .menu-link.button, .menu-link.button.hollow
+        color: #1779ba
+        margin-left: 4px
+        line-height: 42px !important
+        height: 42px
+
+    .menu-link.button
+        color: #fff
+        line-height: 50px
+        margin-top: 4px
+
+
+    .right
+        display: flex
+        margin-left: auto
+
+
+    ul.dropdown ul.menu
+        background-color: #fff
+        border-color: #e6e6e6
+        border-top: none
+
+
+    ul.dropdown ul.menu li:hover, ul.dropdown.menu li.is-active
+        background-color: #f2f2f2
+        border: 1px 1px 0px solid #e6e6e6
+
+    ul.dropdown li .menu-link::after
+        top: 27px
+        right: 0px
+        margin-right: 8px
+
+
+
+/* small device navigation */
+#mobile-menu
+    list-style: none
+    color: #000
+    display: none
+
+#mobile-menu .menu-bars
+    cursor: pointer
+    line-height: 50px
+    height: 50px
+    padding: 4px
+
+.bar1, .bar2, .bar3 
+    width: 28px
+    height: 4px 
+    background-color: #000
+    margin: 6px
+    border-radius: 5px
+    transition: 0.4s
+
+.show-menu .bar1 
+    -webkit-transform: rotate(-45deg)  translate(-11px, 9px)
+    transform: rotate(-45deg)  translate(-11px, 9px)
+
+.show-menu .bar2 
+    opacity: 0
+
+.show-menu .bar3 
+    -webkit-transform: rotate(45deg) translate(-4px, -4px) 
+    transform: rotate(45deg) translate(-4px, -4px) 
+
+
+#mobile-menu .mobile-link
+    height: 50px
+    padding: 5px 10px
+
+
+#mobile-menu .mobile-menu-wraper
+    background-color: #f2f2f2
+    position: absolute
+    left: 0
+    top: 50px
+    right: 0
+    margin: 0
+    padding: 0
+    height: 100vh
+    overflow: auto
+    display: none
+    z-index: 2
+    transition: width 300ms ease-in-out
+    transform-origin: center right 
+
+#mobile-menu.show-menu .mobile-menu-wraper
+    display: block
+    animation: slideInLeft 300ms ease-in-out forwards
+
+#mobile-menu.hide-menu .mobile-menu-wraper
+    display: block
+    animation: slideOutRight 300ms ease-in-out forwards
+
+#mobile-menu.show-menu .mobile-menu-wraper .mobile-menu-container
+    display: flex
+    flex-direction: column
+
+
+@media screen and (max-width: 64em)
+    #nav .menu-link:not(#brand)
+        display: none
+    
+    #mobile-menu
+        display: block
+    
+
+
+
+
+#nav .menu-dropdown.show-menu .menu-dropdown-pane
+    display: flex
+    flex-direction: column
+    padding-left: 20px
+
+#nav .menu-dropdown-button
+    width: 100%
+    margin-bottom: 5px
+
+#nav .menu-dropdown-pane
+    display: none
+    margin: 0
+    background-color: #e6e6e6
+    z-index: 1
+
+#nav .menu-dropdown-pane a
+    width: 90%
+    padding: 6px
+
+
+
+
+#category-modal
+    position: absolute
+    height: 100%
+    top: 0
+    bottom: 0
+    right: 0
+    background-color: #f2f2f2
+    height: 100vh
+    overflow: auto
+    z-index: 4
+    display: none
+    transition: width 300ms ease-in-out
+    transform-origin: center right
+
+    &.show-modal
+        display: block
+        animation: slideInLeft 300ms ease-in-out forwards
+    &.hide-modal
+        display: block
+        animation: slideOutRight 300ms ease-in-out forwards
+
+@keyframes slideInLeft
+    0%
+        width: 0%
+    
+    100%
+        width: 100%
+
+@keyframes slideOutRight
+    0%
+        width: 100%
+    
+    100%
+        width: 0%
+        display: none    
+
+.close-btn
+    display: inline-block
+    height: 40px
+    width: 40px
+    margin: 0
+    padding: 0
+    color: #666
+    cursor: pointer
+    float: left
+
+.close-btn:hover
+    color: #000
+
+
+/* navigation end */
+
+
+// flashed messages styles
+%message-shared
+    border: 1px solid #ccc
+    padding: 10px
+    color: #333
+
+.message
+    @extend %message-shared
+
+.success
+    @extend %message-shared
+    border-color: green
+
+
+.error
+    @extend %message-shared
+    border-color: red
+
+
+.warning
+    @extend %message-shared
+    border-color: yellow
+// end flash message
+
+
+/* homepage*/
+#home-hero1
+    margin: 24px 0px
+
+@media screen and (max-width: 64em)
+    #home-hero1 .box1
+        padding: 50px 25%
+        text-align: center
+    
+
+@media screen and (min-width: 64em)
+    #home-hero1 .grid-x
+        position: relative
+    
+    #home-hero1 .box1
+        height: 100%
+        position: absolute
+        top: 20%
+        left: 15px
+        z-index: 1
+        margin: 0 auto
+    
+
+#home-hero2
+    margin: 24px 0px
+
+@media screen and (max-width: 64em)
+    #home-hero2 .box1
+        padding: 50px 25%
+        text-align: center
+    
+
+@media screen and (min-width: 64em)
+    #home-hero2 .grid-x
+        position: relative
+    
+    #home-hero2 .box1
+        height: 100%
+        position: absolute
+        top: 20%
+        right: 15px
+        z-index: 1
+        margin: 0 auto
+        color: #fff
+    
+
+#home-hero2
+    margin-top: 50px
+
+
+/* endhomepage */
+
+
+
+
+/* blog homepage */
+#blog-nav
+    margin: 0
+    padding: 0
+    background-color: #2f2f2f
+    color: #fff
+    font-size: 15px
+    height: 60px
+    width: 100vw
+
+    ul
+        margin: 0
+        padding: 0
+        height: 60px
+
+    ul li, ul ul
+        display: inline-block
+        margin: 0
+        margin-right: 20px
+        padding: 0
+        text-decoration: none
+        line-height: 60px
+
+    ul li a
+        color: #fff
+        height: 60px
+        padding: 18px
+        margin: 0
+
+    ul li a:hover
+        background-color: #464646
+
+/* end bloghomepage */
+
+#post-catalog
+    width: 100%
+    margin-top: 15px
+    background-color: #fff
+
+
+#post
+    padding-left: 0
+    padding-right: 0
+    margin-top: 36px
+    background: #fff
+    display: block
+    padding: 27px 0 40px
+    -webkit-font-smoothing: antialiased
+
+
+#post h1
+    padding: 38px 0 2px
+    font-size: 34px
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-weight: 100
+    line-height: 40px
+
+#post .post-category p
+    display: inline-block
+    font-size: 16px
+    font-weight: 100
+    border-bottom: 2px solid #108f47
+
+#post #tags
+    margin: 4px 0 14px
+    font-size: 16px
+
+    li a
+        font-size: 0.8em
+        font-weight: 400
+        color: #616161 
+        display: inline-block
+        padding: 2px 8px
+        margin: 2px
+        border: #e6e6e6 1px solid
+    li
+        display: inline
+        padding: 0
+        margin: 0
+    li::after
+        content: ','
+        padding: 2px
+
+article
+    padding: 24px 0 0
+    font-weight: 400
+    font-size: 17px
+    line-height: 30px
+    color: #262626
+
+#post img
+    display: block
+    margin-left: auto
+    margin-right: auto
+    width: 100%
+    margin: 20px auto 30px
+
+#related-posts
+    margin-top: 36px
+
+.post-media-object
+    background-color: #fff
+    padding: 18px 12px
+
+
+
+#show-comments
+    margin-top: 44px
+
+#show-comments .comment
+    background-color: #fff
+    margin-bottom: 3px
+    padding: 20px
+
+#show-comments .comment .thumbnail img
+    height: 70px
+    width: 70px
+
+
+#add-comments
+    background-color: #fff
+    margin-top: 14px
+
+
+
+
+/* forms style*/
+
+#login-form-container
+    background-color: rgba(0,0,0,0.5)
+    padding-top: 150px
+    width: 100vw
+    height: 100vh
+    margin: 0 auto
+    position: relative
+    background-image: url('../assets/img/login-bg.jpeg')
+    background-size: cover
+    background-repeat: no-repeat
+    background-position: center
+
+#login-form-box
+    background-color: #fff
+    padding: 50px 20px
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    width: 100%
+    height: 100%
+    margin: 0 auto
+    -webkit-box-shadow: none
+    -moz-box-shadow: none
+    box-shadow: none
+    border: 0
+    padding: 24px
+    width: 100%
+
+#login-form-box .logo
+    height: 30px
+    margin-bottom: 20px
+
+@media screen and (min-width: 40em)
+    #login-form-box
+        margin-left: auto
+        margin-right: auto
+        min-width: 320px
+        height: auto
+        max-width: 412px
+        width: calc(100% - 40px)
+        padding: 36px
+        margin-bottom: 28px
+        background-color: #fff
+        -webkit-box-shadow: 0 2px 3px rgba(0,0,0,.55)
+        -moz-box-shadow: 0 2px 3px rgba(0,0,0,.55)
+        box-shadow: 0 2px 3px rgba(0,0,0,.55)
+        border: 1px solid #818c94
+        border: 1px solid rgba(0,0,0,.4)
+    
+
+
+#form-container
+    text-align: center
+    padding: 50px 5px
+
+#form-box
+    text-align: left
+    max-width: 35em
+    margin: 0 auto
+    padding: 50px 5px
+
+#form-container .button
+    width: 100%
+
+@media screen and (min-width: 40em)
+    #form-box
+        max-width: 30em
+        padding: 50px 0
+    
+
+.message, .error, .error-msg
+    display: block
+    width: 100%
+    border: 1px solid #1779ba
+    color: #1779ba
+    padding: 10px
+    margin-bottom: 1em
+
+
+
+/* end form*/
+
+
+
+
+
+
+
+#newsletter-container
+    padding: 20px 0
+    background-color: #fff
+    margin-top: 44px
+
+
+#footer
+    margin: 0
+    margin: 48px 0 0
+    padding: 0
+    padding: 20px 0 0
+    background-color: #f2f2f2
+    color: #616161
+
+#footer a
+    color: #616161
+
+#footer .site-map li a
+    padding: 8px
+    color: #616161
+    font-size: 11px
+    line-height: 16px
+    background-color: transparent
+
+
+#footer .badges li img
+    height: 20px
+    display: inline-block
+    background-color: #616161
+
+
+#footer .site-map2 li
+    display: inline-block
+    margin: 0
+    padding: 0 24px 4px 0
+    line-height: 16px
+    font-size: 12px
+
+
+
+
+
+
+.user-front
+    margin: 10px 0
+    position: relative
+
+.user-front img
+    display: inline-block
+    height: 128px
+    width: 128px
+
+.user-front h1
+    margin: 0 20px
+    display: inline
+    position: absolute
+    bottom: 5%
+    text-transform: capitalize
+    color: #666
+
+
+
+/* global helper classes */
+.margin
+    margin: 15px
+.margin-y
+    margin-top: 15px
+    margin-bottom: 15px
+    &.jumbo
+        margin-top: 40px
+        margin-bottom: 40px 
+    .xs
+        margin-top: 5px
+        margin-bottom: 5px
+.margin-x
+    margin-left: 15px
+    margin-right: 15px
+    .xs
+        margin-left: 5px
+        margin-right:  5px
+    
+    &.jumbo
+        margin-left: 40px
+        margin-right:  40px
+.padding
+    padding: 15px
+
+.padding-x
+    padding-left: 15px
+    padding-right: 15px
+
+.padding-y
+    padding-right: 15px
+    padding-left: 15px
+
+.bg-white
+    background-color: #fff
+
+.txt-white
+    color: #fff 
+
+
+.container
+    padding-right: 15px
+    padding-left: 15px
+    margin-right: auto
+    margin-left: auto
+
+@media (min-width:768px)
+    .container
+        width: 750px
+@media (min-width:992px)
+    .container
+        width: 970px
+@media (min-width:1200px)
+    .container
+        width: 1170px
+
+
+.jumbotron
+    padding-top: 30px
+    padding-bottom: 30px
+    margin-bottom: 30px
+    color: inherit
+    background-color: #eee
+.jumbotron .h1,.jumbotron h1
+    color: inherit
+.jumbotron p
+    margin-bottom: 15px
+    font-size: 21px
+    font-weight: 200
+.jumbotron>hr
+    border-top-color: #d5d5d5
+.container .jumbotron,.container-fluid .jumbotron
+    padding-right:  15px
+    padding-left:   15px
+    border-radius:  6px
+.jumbotron .container
+    max-width:  100%
+@media screen and (min-width:768px)
+    .jumbotron
+        padding-top: 48px
+        padding-bottom: 48px
+    .container .jumbotron,.container-fluid .jumbotron
+        padding-right: 60px
+        padding-left: 60px
+    .jumbotron .h1,.jumbotron h1
+        font-size: 63px
+
+
+.btn 
+  display: inline-block
+  border-radius: 4px
+  background-color: #f4511e
+  border: none
+  color: #FFFFFF
+  text-align: center
+  font-size: 28px
+  padding: 20px
+  width: 200px
+  transition: all 0.5s
+  cursor: pointer
+  margin: 5px
+
+
+.btn span 
+  cursor: pointer
+  display: inline-block
+  position: relative
+  transition: 0.5s
+
+
+.btn span:after 
+  content: '\00bb'
+  position: absolute
+  opacity: 0
+  top: 0
+  right: -20px
+  transition: 0.5s
+
+
+.btn:hover span 
+  padding-right: 25px
+
+
+.btn:hover span:after 
+  opacity: 1
+  right: 0
+
+
+
+/* end helper classes */
+
+
+
+// custom pages styles
+
+#post-categories
+    li
+        margin: 2px 8px
+#post-tags
+    ul
+        li.tag-name
+            display: inline-block
+            padding: 2px 8px
+            margin: 2px 6px
+            border: #e6e6e6 1px solid

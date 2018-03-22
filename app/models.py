@@ -29,8 +29,8 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
-    def avatar(self, size):
+    # this function can also take different sizes
+    def avatar(self, size=128):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
@@ -65,14 +65,17 @@ class PostCategory(db.Model):
     def __repr__(self):
         return '<Post Category %s>' %(self.category_name)
 
-post_tags  = db.Table('post_tags', 
+    def len_category(self,categoryID):
+        cat = PostCategory().query.get(int(categoryID))
+        return len(cat.posts)
+
+post_tags  = db.Table('post_tags',  
     db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
 )
 
 class Post(db.Model):
     __tablename__ = 'post'
-    __searchable__ = ['heading', 'body']
 
     id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String(50))
@@ -86,7 +89,7 @@ class Post(db.Model):
     tags = db.relationship('Tag', secondary=post_tags,
         backref=db.backref('post_tags', lazy='dynamic')
             )
-
+    thumbnail = db.Column(db.String)
     def get_post_url(self):
         return self.post_url
     def get_post_id(self):
@@ -98,8 +101,9 @@ class Post(db.Model):
     def post_author_avatar(self, user, size):
         author = User.query.filter_by(username=user).first()
         return author.avatar(size)
-    def post_thumbnail(self, postID, size):
-        return url_for('static', filename='assets/img/default.png')
+    def post_thumbnail(self, postID):
+        return Post().query.get(postID).thumbnail
+
     def category(self, postID):
         post = Post().query.get(int(postID))
         category = post.postcategory.category_name
@@ -110,50 +114,30 @@ class Post(db.Model):
         post= Post().query.get(int(postID))
         postcategory = post.postcategory
         return postcategory.posts[:5]
-    def add_tags(self, tagstring):
-        try:
-            string = tagstring
-            splited_chars = []
-            char = []
-            for i in string:
-                if i != ',':
-                    char.append(i)
-                elif i == ',':
-                    char = ''.join(char)
-                    char = char.strip()
-                    splited_chars.append(char)
-                    char = []
-
-            for tag in splited_chars:
-                get_tag = Tag.query.filter_by(tag_name=tag).first()            
-                self.tags.append(get_tag)
-            db.session.commit()
-            return 'tags added'
-        
-        except:
-            pass
-    
-
-
-
-
+    def remove_tags(self, postID):
+        tags = post_tags.query.filter_by(post_id=postID).all()
+        db.session.delete(tags)
+        db.session.commit()
 
 
 
 
 class Tag(db.Model):
     __tablename__ = 'tag'
+
     id = db.Column(db.Integer, primary_key=True)
     tag_name = db.Column(db.String)
 
     posts = db.relationship('Post', secondary=post_tags,
         backref=db.backref('post_tags', lazy='dynamic')
             )
+            
     def new_tag(self, tag):
-        new_tag = Tag(tag_name=tag)
-        db.session.add(new_tag)
-        db.session.commit()
-        return 'tag added'
+        if len(tag) >=1:
+            new_tag = Tag(tag_name=tag)
+            db.session.add(new_tag)
+            db.session.commit()
+            return 'tag added'
                     
     def __repr__(self):
         return '<Tag: {}>'.format(self.tag_name)

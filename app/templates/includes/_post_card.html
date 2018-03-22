@@ -1,0 +1,12 @@
+<div class="cell">
+    <div class="card">
+        <img src="{{post.post_thumbnail(post.id)}}">
+        <div class="card-section">
+        <div class="post-meta row">
+            <p><a href="{{ url_for('user', username=post.author )}}">{{ post.author }} </a>| {{ moment(post.timestamp).format('LL') }}</p>
+        </div>
+        <h6><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></h6>
+        
+        </div>
+    </div>
+</div>

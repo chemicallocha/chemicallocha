@@ -22,8 +22,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <link rel="shortcut icon" href="{{ url_for('static', filename='assets/img/favicon.ico')}}" type="image/x-icon">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='assets/icons/foundation-icons.css')}}"/>
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='assets/libs/foundation/css/foundation.css')}}">
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='assets/css/main.css')}}"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='foundation/css/foundation.css')}}">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/v2.css')}}"/>
         <meta rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
         <meta rel="dns-prefetch" href="{{ url_for('login')}}">
         {% block head %}
@@ -33,82 +33,121 @@
     <!-- header end -->
 
     <body>
-
         <!-- default navigation -->
-        <header id="header">
-            <nav id="nav">
-                <a href="{{ url_for('index') }}" id="logo"><img src="{{ url_for('static', filename='assets/img/cl-logo.svg')}}" alt="Chemical Locha"></a>
+        
+ 
+
+        <nav>
+            <div id="nav" >
+                <div class="container">
+                <a href="{{ url_for('index') }}" id="logo"><img src="{{ url_for('static', filename='assets/img/logo.svg')}}" alt="Chemical Locha"></a>
                 <div class="nav-push"></div>              
                 <a href="{{ url_for('index') }}" id="home" class="menu-link styled">Home</a>
                 <a href="{{ url_for('blog') }}" id="blog" class="menu-link styled">Blog</a>
-                <li id="user-options" class="menu-dropdown-button menu-link">Categories
-                    <ul class="menu-dropdown-pane">
+
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li class="is-dropdown-submenu-parent">
+                        <a href="#" class="menu-link">Categories</a>
+                    <ul class="menu">
                         {% for category in g.categories %}
-                            <li style="list-style:none;"><a href="{{url_for('post_category',categoryID=category.id)}}">{{ category.category_name}}</a></li>
+                        <li><a href="{{url_for('post_category',categoryID=category.id)}}">{{ category.category_name}}</a></li>
                         {% endfor %}
-                    </ul>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="right">
 
-                </li>
-                {% if current_user.is_anonymous %}              
-                <a href="{{ url_for('register') }}" id="register" class="menu-link styled">Sign Up</a>
-                <a href="{{ url_for('login') }}" id="login" class="menu-link button primary">Log In</a>
-                {% else %}
-                <a href="{{ url_for('dashboard') }}" id="dashboard" class="menu-link styled">Dashboard</a>
-                <li class="menu-link menu-dropdown-button" id="user-options">User Options
-                    <ul class="menu-dropdown-pane" id="user-options-ul">                 
-                        <a href="{{ url_for('user', username=current_user.username) }}" id="profile" class="menu-link styled">Profile</a>
-                        <a href="{{ url_for('logout') }}" id="logout" class="menu-link styled">Log Out</a>
-                        {% endif %}
-                        {% if user == current_user %}
-                        <a href="{{ url_for('edit_profile') }}" id="edit-profile" class="menu-link styled">Edit Profile</a>
-                        {% endif %}
-                    </ul>
-                </li>
+                    {% if current_user.is_anonymous %}              
+                        <a href="{{ url_for('register') }}" id="register" class="menu-link button hollow">Sign Up</a>
+                        <a href="{{ url_for('login') }}" id="login" class="menu-link button primary">Log In</a>
+                    {% else %}
+                    <a href="{{ url_for('dashboard') }}" id="dashboard" class="menu-link styled">Dashboard</a>
+                    
+                    
+                    <ul class="dropdown menu" data-dropdown-menu>
+                    <li class="is-dropdown-submenu-parent">
+                        <a href="#" class="menu-link">User</a>
+                        <ul class="menu">
+                        <li><a href="{{ url_for('user', username=current_user.username) }}" id="profile" class="">Profile</a></li>
+                        <li><a href="{{ url_for('logout') }}" id="logout" class="">Log Out</a></li>
+                            
+                            {% endif %}
+                            {% if user == current_user %}
+                            <li><a href="{{ url_for('edit_profile') }}" id="edit-profile" class="">Edit Profile</a></li>
+                            
+                            {% endif %}
+                        </ul>
+                    </li>
+                    </ul>          
+                            
 
-
+                </div>
 
                 <!-- small screen navigation -->
-                <li class="mobile-bars">
-                    <div class="open-menu" onclick="menu(this)">
+                <div id="mobile-menu">
+                    <div class="menu-bars" onclick="menu(this)">
                         <div class="menu-bar bar1"></div>
                         <div class="menu-bar bar2"></div>
                         <div class="menu-bar bar3"></div>
                     </div>
-                    <ul class='mobile-ul w3-animate-right'>
-                        <a href="{{ url_for('index') }}" id="home" class="mobile-link">Home</a>
-                        <a href="{{ url_for('blog') }}" id="blog" class="mobile-link">Blog</a>
-                        {% if current_user.is_anonymous %}
-                        <a href="{{ url_for('login') }}" id="login" class="mobile-link">Log In</a>
-                        <a href="{{ url_for('register') }}" id="register" class="mobile-link">Sign Up</a>
-                        {% else %}
-                        <a href="{{ url_for('dashboard') }}" id="dashboard" class="mobile-link">Dashboard</a>
-                        <a href="{{ url_for('user', username=current_user.username) }}" id="profile" class="mobile-link">Profile</a>
-                        <a href="{{ url_for('logout') }}" id="logout" class="mobile-link">Log Out</a>
-                        {% endif %}
-                        {% if user == current_user %}
-                        <a href="{{ url_for('edit_profile') }}" id="edit-profile" class="mobile-link">Edit Profile</a>
-                        {% endif %}
-                        <a href="{{ url_for('about') }}" id="about" class="mobile-link">About</a>
-                        <a href="{{ url_for('contact') }}" id="contact" class="mobile-link">Contact</a>
-                        <div class="menu-dropdown-button" onclick="this.classList.toggle('show');">
-                            <a class="mobile-link">Categories</a> 
-                            <ul class="menu-dropdown-pane" style="padding-left: 20px;">
-                                {% for category in g.categories %}
-                                    <a href="{{url_for('post_category',categoryID=category.id)}}" class="mobile-link">{{ category.category_name}}</a>
-                                {% endfor %}
-                            </ul>
+                    <div class="mobile-menu-wraper">
+                        <div class="callout small">
+                            <h4 class="text-center">Menu</h4>
                         </div>
-                    </ul>
-                </li>
-            </nav>
-        </header>
+                        <div class="mobile-menu-container container">
+                            
+                            <a href="{{ url_for('index') }}" id="home" class="mobile-link">Home</a>
+                            <a href="{{ url_for('blog') }}" id="blog" class="mobile-link">Blog</a>
+                            {% if current_user.is_anonymous %}
+                            <a href="{{ url_for('login') }}" id="login" class="mobile-link">Log In</a>
+                            <a href="{{ url_for('register') }}" id="register" class="mobile-link">Sign Up</a>
+                            {% else %}
+                            <a href="{{ url_for('dashboard') }}" id="dashboard" class="mobile-link">Dashboard</a>
+                            <a href="{{ url_for('user', username=current_user.username) }}" id="profile" class="mobile-link">Profile</a>
+                            <a href="{{ url_for('logout') }}" id="logout" class="mobile-link">Log Out</a>
+                            {% endif %}
+                            {% if user == current_user %}
+                            <a href="{{ url_for('edit_profile') }}" id="edit-profile" class="mobile-link">Edit Profile</a>
+                            {% endif %}
+                            <a href="{{ url_for('about') }}" id="about" class="mobile-link">About</a>
+                            <a href="{{ url_for('contact') }}" id="contact" class="mobile-link">Contact</a>
+                            
+
+                            <!-- post categories modal -->
+                            <a onclick="showModal('category-modal')" class="callout small">Categories<i class="close-btn" style="float: right;">&gt;</i></a>
+
+                        
+                        
+                        
+                            <!-- category modal -->
+                            <div id="category-modal">
+                                <div class="callout text-center row small">
+                                        <h4><span class="close-btn" onclick="showModal('category-modal')">&lt;</span>Categories</h4>                                    
+                                </div>
+                                <div class="container">
+                                <ul class="no-bullet">
+                                    {% for category in g.categories %}
+                                        <li><a href="{{ url_for('post_category', categoryID=category.id)}}" class="mobile-link">{{ category.category_name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                </div>
+                            </div>                                          
+                        </div>
+
+         
+                    </div>
+                </div>
+                </div>
+            </div>        
+        </nav>
+
         <!-- navigation end -->
 
         <!-- messages generated by user actions -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <li class="{{ category }} callout">{{ message }}</li>
+                <li class="{{ category }} message container callout">{{ message }}</li>
             {% endfor %}
         {% endif %}
         {% endwith %}
@@ -122,10 +161,9 @@
 
 
         <!-- include the comment section  -->
-        {% if commentform %}
-            {% include "includes/_comment.html" %}
-        {% endif %}
 
+
+        <div class="body"></div>
 
         <!-- include newsletter -->
         {% if newsletter_form %}
@@ -133,78 +171,57 @@
         {% endif %}
 
         
-        <div class="body"></div>
 
         <footer id="footer">
 
-            <div class="container-trans">
-            <div class="row grid-x">
-                <div class="row cell large-6 medium-6 small-12">
-                    <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" class="footer-link styled">License</a><br>
-                    <a href="//www.dmca.com/Protection/Status.aspx?ID=60ee1ecd-09f6-419f-b522-b50a3dfa277c" class="footer-link styled">DMCA</a><br>
-                    <a href="{{ url_for('about') }}" id="about" class="footer-link styled">About</a><br>
-                    <a href="{{ url_for('contact') }}" id="contact" class="footer-link styled" style="color:var(--brand-color)!important;">Contact</a>
+            <div class="container">
+            <div class="grid-x medium-up-5 small-up-2">
+                <div class="cell">
+                   <h4>Site Map</h4>
+                   <ul class="site-map no-bullet">
+                       <li><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" class="footer-link styled">License</a></li>
+                       <li><a href="//www.dmca.com/Protection/Status.aspx?ID=60ee1ecd-09f6-419f-b522-b50a3dfa277c" class="footer-link styled">DMCA</a></li>
+                       <li><a href="{{ url_for('about') }}" id="about" class="footer-link styled">About</a></li>
+                       <li><a href="{{ url_for('contact') }}" id="contact" class="footer-link" >Contact</a></li>
+                    </ul>
                 </div>
-                <div class="row cell large-6 medium-6 small-12 badges">
-                    <a href="{{ url_for('index')}}" id="logo-alt"><img src="{{ url_for('static', filename='assets/img/cl-logo-alt.png') }}" alt="Chemical Locha Inc." srcset=""></a>
-                    <a href="//www.dmca.com/Protection/Status.aspx?ID=60ee1ecd-09f6-419f-b522-b50a3dfa277c" title="DMCA.com Protection Status" class="dmca-badge"> <img src="//images.dmca.com/Badges/DMCA_logo-grn-btn180w.png?ID=60ee1ecd-09f6-419f-b522-b50a3dfa277c" alt="DMCA.com Protection Status"></a> <script src="//images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
-                    <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img src="https://creativecommons.org/wp-content/uploads/2016/06/cc.logo_.white_.png" alt="" srcset=""></a>
+                <div class="cell">
+                   <ul class="badges no-bullet">
+                      <h4>Affiliates</h4>
+                       <li><a href="{{ url_for('index')}}" id="logo-alt"><img src="{{ url_for('static', filename='assets/img/cl-logo-alt.png') }}" alt="Chemical Locha Inc." srcset=""></a></li>
+                       <li><a href="//www.dmca.com/Protection/Status.aspx?ID=60ee1ecd-09f6-419f-b522-b50a3dfa277c" title="DMCA.com Protection Status" class="dmca-badge"><img src="//images.dmca.com/Badges/DMCA_logo-grn-btn180w.png?ID=60ee1ecd-09f6-419f-b522-b50a3dfa277c" alt="DMCA Protection"></a> <script src="//images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script></li>
+                       <li><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img src="https://creativecommons.org/wp-content/uploads/2016/06/cc.logo_.white_.png" alt="Creative Commons"></a></li>
+                    </ul>
                 </div>
             </div>
             </div>
-            <p class="row legal-para text-center">Copyright &copy; 2018 - <a href="{{ url_for('about') }}" class="brand">Raja Tomar</a> - All rights Reserved</p>
-            <p class="row legal-para text-center"><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>  This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</p>
+   
+            <div class="site-map2 text-right">
+            <ul class="no-bullet row">
+              <li><a href="{{url_for('contact')}}">Contact Us</a></li>
+              <li><a href="{}"></a></li>
+               <li><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC Commercial License</a></li>
+                <li>&copy; Raja Tomar 2018</li>
+                
+            </ul>
+            </div>
         </footer>
+        
         <!-- footer end -->
-
-
 
         <!-- scripts links -->
 
 
-        <script src="{{ url_for('static', filename='assets/libs/foundation/js/vendor/jquery.js')}}" charset="utf-8"></script>
-        <script src="{{ url_for('static', filename='assets/libs/foundation/js/vendor/what-input.js')}}" charset="utf-8"></script>
-        <script src="{{ url_for('static', filename='assets/libs/foundation/js/vendor/foundation.js')}}" charset="utf-8"></script>
-
+        <script src="{{ url_for('static', filename='foundation/js/vendor/jquery.js')}}" charset="utf-8"></script>
+        <script src="{{ url_for('static', filename='foundation/js/vendor/what-input.js')}}" charset="utf-8"></script>
+        <script src="{{ url_for('static', filename='foundation/js/vendor/foundation.js')}}" charset="utf-8"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 
 
         <!-- scripts links end -->
         {% block script %}
         {% endblock %}
-        <script>
-            $(document).foundation()
-            
-            function menu(x) {
-                x.parentNode.classList.toggle("show-menu")
-            }
-        </script>
-        <script>
-            $(document).ready(function(){
-                // Add smooth scrolling to all links
-                $("a").on('click', function(event) {
-            
-                // Make sure this.hash has a value before overriding default behavior
-                if (this.hash !== "") {
-                    // Prevent default anchor click behavior
-                    event.preventDefault();
-            
-                    // Store hash
-                    var hash = this.hash;
-            
-                    // Using jQuery's animate() method to add smooth page scroll
-                    // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-                    $('html, body').animate({
-                    scrollTop: $(hash).offset().top
-                    }, 800, function(){
-                
-                    // Add hash (#) to URL when done scrolling (default click behavior)
-                    window.location.hash = hash;
-                    });
-                } // End if
-                });
-            });
-        </script>
         {{ moment.include_moment() }}     
     </body>
 </html>

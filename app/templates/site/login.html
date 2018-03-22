@@ -1,10 +1,21 @@
-{% extends "base.html" %}
-
-{% block content %}
-
-    <section id="form-container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='assets/img/favicon.ico')}}" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='assets/icons/foundation-icons.css')}}"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='foundation/css/foundation.css')}}">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/v2.css')}}"/>
+    <title>Login - Chemical Locha</title>
+</head>
+<body id="login-form-container">
+    <div class="container">
+    <section id="login-form-box">
+       <a href="{{ url_for('index')}}"><img class="logo" src="{{url_for('static', filename="assets/img/logo.png")}}" alt=""></a>
         <h1>Sign In</h1>
-        <form action="" method="post" id="form-box" class="slide-in">
+        <form action="" method="post" class="slide-in">
+            
             {{ form.hidden_tag() }}
             
                 {{ form.username.label(class="label") }}
@@ -25,8 +36,19 @@
                 {% endfor %}
             
             <div>{{ form.remember_me(class="check") }} {{ form.remember_me.label }}</div>
-            {{ form.submit(class="button secondary") }}
+            {{ form.submit(class="button expanded default") }}
+           <br> No Account? <a href="{{ url_for('register') }}">Create one!</a>
         </form>
-        New User? <a href="{{ url_for('register') }}">Click to Register!</a>
+        
     </section>
-{% endblock %}
+</div>
+
+        <script src="{{ url_for('static', filename='foundation/js/vendor/jquery.js')}}" charset="utf-8"></script>
+        <script src="{{ url_for('static', filename='foundation/js/vendor/what-input.js')}}" charset="utf-8"></script>
+        <script src="{{ url_for('static', filename='foundation/js/vendor/foundation.js')}}" charset="utf-8"></script>
+        <script>
+            $(document).foundation()
+    </script>
+</body>
+</html>
+

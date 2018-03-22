@@ -1,89 +1,83 @@
 {% extends "base.html" %}
 {% block content %}
 
-<section id="blog-home" class="container">
-    <div class="jumbo">
-        <h1>Feed on the latest blog feed.</h1>
-        <a href="#posts"></a>
-    </div>
-</section>
-<section id="featured-posts" class="container">
+<nav id="blog-nav">
+    <ul class="no-bullet">
+       <div class="container">
+           <li class="#text"><h3>Blog</h3></li>
+        <li><a href="#featured-posts">Featured</a></li>      
+        <li><a href="#latest-posts">Latest</a></li>
+        </div>
+    </ul>
+</nav>
+
+
+
+<div class="grid-x container grid-padding-x">
+<div class="cell large-7 small-12">
+<section id="featured-posts" class="margin-y jumbo">
+   
     {% if featured_posts %}
-        <h1><small>Featured Posts</small></h1><hr><br>
+        <p class="lead">Featured</p>
+        <div class="margin-y">
+        
         {% for post in latest.items[:5] %}
-            <div id="post-tab">
-                {% if post.banner %}
-                    <img src="{{ post.banner }}" alt="" srcset="">
-                {% endif %}
-                <h3><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></h3><br>
-                <div class="post-meta row">
-                    <p><i class="fi-like"></i> Likes : {{ post.likes }}
-                    <br><i class="fi-torso"></i> Written By: {{ post.author }} <br>
-                    <i class="fi-clock"></i> Last Updated: {{ moment(post.timestamp).format('LLL') }}</p>
-                </div>
-                <a href="{{ url_for('show_post', postID=post.id)}}" class="button secondary">Read Article</a>
-                <br><br>
-            </div>
+            {% include "includes/_post_card.html" %}
         {% endfor %}
+    </div>
     {% endif %}
 </section>
-<section id="latest-posts" class="container">
+
+<section id="latest-posts" class="margin-y jumbo">
     {% if latest %}
-        <h1><small>Recents Posts</small></h1><hr><br>
-        {% for post in latest.items %}
-            <div id="post-tab">
-                {% if post.banner %}
-                    <img src="{{ post.banner }}" alt="" srcset="">
-                {% endif %}
-                <h3><a href="{{ url_for('show_post', postID=post.id)}}">{{ post.heading }}</a></h3><br>
-                <div class="post-meta row">
-                    <p>
-                    <i class="fi-like"></i> Likes : {{ post.likes }}<br>
-                    <i class="fi-torso"></i> Written By: {{ post.author }} <br>
-                    <i class="fi-clock"></i> Last Updated: {{ moment(post.timestamp).format('LLL') }}</p>
-                </div>
-                <a href="{{ url_for('show_post', postID=post.id)}}" class="button secondary">Read Article</a>
-                <br><br>
-            </div>
-        {% endfor %}
-    {% endif %}
-    <div id="posts-pagination" class="row callout pagination">
+        
+
+        <p class="lead">Latest</p>
+        <div class="margin-y">
+            {% for post in latest.items %}
+            
+                {% include "includes/_post_card.html" %}
+            {% endfor %}
+        </div>
+        <div id="posts-pagination" class="row container pagination">
         <div class="float-left">
         {% if latest.has_prev %}
-            <a href="{{ url_for('blog', page=latest.prev_num) }}" class="button hollow"><i class="fi-arrow-left"></i> Newer posts</a>
-        {% else %}
-            <i class="fi-arrow-left"></i> No Newer posts
+            <a href="{{ url_for('blog', page=latest.prev_num) }}" class="button round hollow"><i class="fi-arrow-left"></i> Newer posts</a>
         {% endif %}
         </div>
         <div class="float-right"> 
         {% if latest.has_next %}
-            <a href="{{ url_for('blog', page=latest.next_num) }}" class="button hollow">Older posts <i class="fi-arrow-right"></i></a>
-        {% else %}
-          No Older posts <i class="fi-arrow-right"></i>
+            <a href="{{ url_for('blog', page=latest.next_num) }}" class="button round hollow">Older posts <i class="fi-arrow-right"></i></a>
         {% endif %}
         </div>
     </div>
-
+    {% endif %}
 </section>
-<section id="post-categories" class="container">
-    <p class="lead">Post Categories</p><hr>
-    <ul class="categories-list container">
+
+</div>
+
+<div class="cell large-4 small-12 large-offset-1">
+<section id="post-categories" class="container margin-y jumbo">
+    <p class="lead">Posts by Category</p>
+    <ul class="categories-list no-bullet">
     {% for category in post_categories %}
         <li class="category">
-            <a href="{{ url_for('post_category' , categoryID=category.id) }}">{{ category.category_name }}</a>
+            <a href="{{ url_for('post_category' , categoryID=category.id) }}"><span class="label primary">{{ category.category_name }}</span>  {{ category.len_category(category.id)}} Posts</a>
         </li>
     {% endfor %}
     </ul>
 </section>
-<section id="post-tags" class="container">
-        <p class="lead">Post Tags</p><hr>
-        <ul class="tags-list container">
+<section id="post-tags" class="container margin-y jumbo">
+       <p class="lead">Posts by Tag</p>
+        <ul class="tags-list no-bullet">
         {% for tag in tags %}
-            <li class="category">
+            <li class="tag-name">
                 <a href="{{ url_for('post_tag' , tagID=tag.id) }}">{{ tag.tag_name }}</a>
             </li>
         {% endfor %}
         </ul>
     </section>
+    </div>
+</div>
 
 {% endblock%}

@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<section id="user-profile" class="container">
+<section id="user-profile" class="container margin-y jumbo">
     <div class="user">
         <div class="row user-front">
-            <img src="{{ url_for('static', filename='assets/img/cl-logo-square.png')}}"><h1 style="display:inline-block;"> {{ user.username }} </h1>
+            <img src="{{ user.avatar()}}"><h1> {{ user.fullname }} </h1>
         </div>
     </div>
+    <br><hr>
+    <br><br>
     <div class="user-info">
+        <p>You can change your profile picture using <a href="https://gravatar.com">gravatar.com</a></p>
         <div class="last-seen">
             <p>Last Seen On : {% if user.last_seen %}<span class="timestamp">{{ moment(user.last_seen).format('LLLL') }}</span>{% endif %}</p>
         </div>

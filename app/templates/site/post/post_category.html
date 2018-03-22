@@ -1,10 +1,10 @@
 {% extends 'base.html'%}
 {% block content %}
-<section id="post-category" class="container">
+<section id="post-category" class="container margin-y jumbo">
     <p class="lead">Posts in Category {{ category.category_name }}</p><hr><br><br>
-    <ul class="posts-list row">
+    <ul class="posts-list no-bullet grid-x grid-padding-x large-up-2 small-up-1">
     {% for post in posts %}
-        {% include 'includes/_post_media_object.html'%}
+        {% include 'includes/_post_card.html'%}
     {% endfor %}
     </ul>
 </section>

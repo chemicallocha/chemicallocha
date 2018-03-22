@@ -2,3 +2,4 @@ venv/*
 app.db
 .vscode
 *.pyc
+.sass-cache/*

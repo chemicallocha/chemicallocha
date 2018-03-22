@@ -2,7 +2,7 @@ from flask import g, render_template, flash, redirect, url_for, send_file
 from app import app
 from app.forms import LoginForm, RegistrationForm, ContactForm, EditProfileForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Contact, Post, NewsLetter
+from app.models import User, Contact, Post, NewsLetter, Tag, Comment, File, PostCategory
 from app import db
 from flask import request
 from functools import wraps
@@ -10,10 +10,7 @@ from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from app.forms import SearchForm, NewsLetterForm, CommentForm, FileUploadForm, ArticleForm
-from app.models import Tag, NewsLetter, Comment, File, PostCategory
-import os
 from io import BytesIO
-from sqlalchemy.orm import lazyload
 
 
 # scripts to be loaded on each page
@@ -34,13 +31,13 @@ def before_request():
 #error handlers
 @app.errorhandler(404)
 def file_not_found(error):
- 
-    return render_template('site/404.html'), 404
+    db.session.rollback()
+    return render_template('site/error/404.html'), 404
 
 @app.errorhandler(500)
 def server_error(error):
-
-    return render_template('site/500.html'), 500
+    db.session.rollback()
+    return render_template('site/error/500.html'), 500
 
 
 
@@ -65,6 +62,7 @@ def like_post():
 @app.route('/')
 @app.route('/index')
 @app.route('/index.html')
+@app.route('/home')
 def index():
     featured = Post().query.order_by(Post.likes)
     newsletter_form = NewsLetterForm()
@@ -163,6 +161,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            user = User.query.filter_by(email=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
@@ -185,7 +185,7 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data, fullname=form.fullname.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -380,11 +380,33 @@ def add_article():
     tags = Tag().query.all()
 
     if form.validate_on_submit():
-        article = Post(heading=form.heading.data, author=current_user.username, timestamp=datetime.utcnow(), body=form.body.data)
-        post_category = PostCategory().query.filter_by(category_name=request.form['post-category-selector']).first()
-        post_category.posts.append(article)
+        category = PostCategory().query.filter_by(category_name=request.form['post-category-selector']).first()
+        
+        article = Post(heading=form.heading.data, author=current_user.username, timestamp=datetime.utcnow(), body=form.body.data, thumbnail=request.form['thumbnail'])
+
+        string = request.form['tags'] + ','
+        tag_list = []
+        char = []
+        for i in string:
+            if i != ',':
+                char.append(i)
+            elif i == ',':
+                char = ''.join(char)
+                char = char.strip()
+                get_tag = Tag.query.filter_by(tag_name=char).first()
+                if get_tag is not None:
+                    tag_list.append(get_tag)
+                elif get_tag is None:
+                    Tag().new_tag(char)
+                    get_tag = Tag.query.filter_by(tag_name=char).first()
+                    if get_tag is not None:
+                        tag_list.append(get_tag)
+
+                char = [] 
+
+        article.tags = tag_list
+        category.posts.append(article)
         db.session.commit()
-        article.add_tags(request.form['tags'])
         flash('Your Article has been successfully added !', 'success')
         return redirect(url_for('dashboard'))
     return render_template('user/add_article.html', title='Add Article', form=form, postcategories=postcategories,tags=tags)
@@ -406,8 +428,11 @@ def confirm_delete(postID):
 @app.route('/delete_article/<int:postID>')
 @login_required
 def delete_article(postID):
-    post = Post().query.get(int(postID))
+    post = Post.query.get(int(postID))
+
     if post.author == current_user.username:
+        post.tags = []
+        db.session.flush()
         db.session.delete(post)
         db.session.commit()
         flash('Your post has been successfully deleted !', 'success')
@@ -491,11 +516,15 @@ def post_catalog():
 def post_category(categoryID):
     tags=Tag().query.all()
     category = PostCategory().query.get(int(categoryID))
+    if category is None:
+        return file_not_found(404)
     posts = category.posts
     return render_template('site/post/post_category.html', posts=posts, category=category, tags=tags)
 @app.route('/blog/post/tag/<tagID>')
 def post_tag(tagID):
     tag = Tag().query.get(int(tagID))
+    if tag is None:
+        return file_not_found(404)
     posts =  tag.posts
     return render_template('site/post/post_tag.html', posts=posts, tag=tag)
 
@@ -508,18 +537,27 @@ def add_post_catalog():
 @login_required
 def add_category():
     if request.method == 'POST':
-        category = PostCategory(category_name=request.form['category'])
-        db.session.add(category)
-        db.session.commit()
-        flash('Category added Successfully!', 'success')
+        category = PostCategory().query.filter_by(category_name=request.form['category']).first()
+        if category is None:
+            category = PostCategory(category_name=request.form['category'])
+            db.session.add(category)
+            db.session.commit()
+            flash('Category added Successfully!', 'success')
+        else: 
+            flash('Category already exists!', 'alert')
         return render_template('site/post/add_post_catalog.html')
 
 @app.route('/add_tag', methods=['POST'])
 @login_required
 def add_tag():
     if request.method == 'POST':
-        tag = Tag(tag_name=request.form['tag'])
-        db.session.add(tag)
-        db.session.commit()
-        flash('Tag added Successfully', 'success')
+        tag = Tag().query.filter_by(tag_name=request.form['tag']).first()
+        if tag is None:
+            tag = Tag(tag_name=request.form['tag'])
+            db.session.add(tag)
+            db.session.commit()
+        
+            flash('Tag added Successfully', 'success')
+        else:
+            flash('Tag already exists!', 'alert')
         return render_template('site/post/add_post_catalog.html')
