@@ -1,5 +1,5 @@
 # Aeroson blogging system &copy; vMaster (Heroku) 
-This is global version of the blog hosted on heroku.com
+This is global version of the blog hosted on chemicallocha.herokuapp.com
 
 ### Copyright
 This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
